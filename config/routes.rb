@@ -52,6 +52,11 @@ Rails.application.routes.draw do
   get "/delete_like/:id", :controller => "likes", :action => "destroy"
   #------------------------------
 
+  devise_for :users
+  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+
+  #------------------------------
+
   # Routes for the User resource:
 
   # READ
@@ -59,7 +64,4 @@ Rails.application.routes.draw do
   get "/users/:id", :controller => "users", :action => "show"
 
   #------------------------------
-
-  devise_for :users
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
