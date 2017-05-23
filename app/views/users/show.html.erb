@@ -10,7 +10,7 @@
 
       <% @photos.each do |photo| %>
       <tr>
-        <td><img src="<%= photo.image %>" width="300"></td></tr>
+        <td><img src="<%= photo.image %>" width="500"></td></tr>
       <% photo.comments.each do |comment| %>
       <tr>
         <td><%= comment.user.username %></td>
