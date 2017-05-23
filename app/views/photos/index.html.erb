@@ -1,42 +1,44 @@
-<div class="page-header">
+<p></p>
+
+  <div class= "row">
+  <div class= "col-md-8 col-md-offset-2">
   <a href="/photos/new" class="btn btn-default btn-block">
-<i class="fa fa-plus"></i>
-    </a>
+    <i class="fa fa-plus"></i>
+  </a>
+  <hr>
+</div>
 </div>
 
 
-  <div class="col-md-8 cold-md-offset-2">
-  </div>
-    <% @photos.each do |photo| %>
-      <div class="row">
-        <div class="col-md-8 cold-md-offset-2">
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              <h3 class="panel-title">
-                <%=photo.user.username%>
-                <small> <%=((Time.now - photo.created_at)/(60**2)).round%> hours ago</small>
-              </h3>
-            </div>
-          <div class="panel-body">
+<% @photos.each do |photo| %>
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">
+          <%=photo.user.username%>
+          <small> <%=((Time.now - photo.created_at)/(60**2)).round%> hours ago</small>
+        </h3>
+      </div>
+      <div class="panel-body">
         <img src="<%= photo.image %>" class="img-responsive">
         <p></p>
 
         <!-- check if there is a like for this user and photo already -->
 
-        <% if Like.where(:user_id=> current_user.id, :photo_id=> photo.id).exists?%>
+        <% like = Like.where(:user_id=> current_user.id, :photo_id=> photo.id).first %>
+        <% if like.present?%>
 
         <!-- if yes, display a closed heart and allow user to delete like -->
 
-        <form action = "/delete_like/<%=(Like.where(:user_id=> current_user.id, :photo_id=> photo.id).ids).sample%>">
-        <button class="btn btn-link">
-          <i class="fa fa-heart"></i></button>
-        </form>
+        <a href= "/delete_like/<%= like.id %>" class="btn btn-link">
+          <i class="fa fa-heart"></i></a>
 
           <!-- if not, display open heart and allow user to add like -->
-          
+
           <%else%>
-        <form action="/create_like" method="post">
-          <!-- Hidden input for authenticity token to protect from forgery -->
+          <form action="/create_like" method="post">
+            <!-- Hidden input for authenticity token to protect from forgery -->
             <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
 
             <!-- Label and input for user_id -->
@@ -54,66 +56,64 @@
           <%end%>
 
 
-        <ul class="media-list">
-          <li class="media">
-            <div class="media-body">
-              <h6 class="media-heading">
-                <a href="/users/<%=photo.user_id%>">
-                  <%=photo.user.username%> </a>
-                  <small> <%=((Time.now - photo.created_at)/(60**2)).round%> hours ago</small>
-                </h6>
-                <%= photo.caption %></li>
-                <% photo.comments.each do |comment| %>
-                <li class="media">
-                  <div class="media-body">
+          <ul class="media-list">
+            <li class="media">
+              <div class="media-body">
                 <h6 class="media-heading">
-                  <a href="/users<%=comment.user_id%>"><%= comment.user.username %> </a>
-                  <small> <%= ((Time.now - comment.created_at)/(60**2)).round%> hours ago</small>
-                  <p>
-                  <%= comment.body%></p>
-                  <%end%></ul>
-                <p>
-                <!-- new form for creating a comment in line -->
-                  <form action="/quick_create" method="post">
-                    <!-- Hidden input for authenticity token to protect from forgery -->
-                    <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+                  <a href="/users/<%=photo.user_id%>">
+                    <%=photo.user.username%> </a>
+                    <small> <%=((Time.now - photo.created_at)/(60**2)).round%> hours ago</small>
+                  </h6>
+                  <%= photo.caption %></li>
+                  <% photo.comments.each do |comment| %>
+                  <li class="media">
+                    <div class="media-body">
+                      <h6 class="media-heading">
+                        <a href="/users<%=comment.user_id%>"><%= comment.user.username %> </a>
+                        <small> <%= ((Time.now - comment.created_at)/(60**2)).round%> hours ago</small>
+                        <p>
+                          <%= comment.body%></p>
+                          <%end%></ul>
+                          <p>
+                            <!-- new form for creating a comment in line -->
+                            <form action="/quick_create" method="post">
+                              <!-- Hidden input for authenticity token to protect from forgery -->
+                              <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
 
-                    <!-- Label and input for photo_id -->
-                    <input type="hidden" id="photo_id" name="photo_id" value="<%= photo.id %>">
-                    <!-- Label and input for user_id -->
-                    <input type="hidden" id="user_id" name="user_id" value="<%= current_user.id %>">
+                              <!-- Label and input for photo_id -->
+                              <input type="hidden" id="photo_id" name="photo_id" value="<%= photo.id %>">
+                              <!-- Label and input for user_id -->
+                              <input type="hidden" id="user_id" name="user_id" value="<%= current_user.id %>">
 
 
-                    <!-- Label and input for body -->
-                    <div class="form-group">
-                      <input type="text" id="body" name="body" class="form-control" placeholder="Add a comment...">
+                              <!-- Label and input for body -->
+                              <div class="form-group">
+                                <input type="text" id="body" name="body" class="form-control" placeholder="Add a comment...">
+                              </div>
+                              <button class="btn btn-default" >
+                                <i class = "fa fa-commenting-o"></i>
+                              </button>
+
+
+                            </form>
+                          </p>
+
+                        </div>
+                        <% if current_user.id == photo.user_id%>
+
+                        <a href="/photos/<%= photo.id %>" class="btn btn-primary">Show</a>
+                        <a href="/photos/<%= photo.id %>/edit" class="btn btn-warning">Edit</a>
+                        <a href="/delete_photo/<%= photo.id %>" class="btn btn-danger" rel="nofollow">Delete</a>
+
+                        <% else%>
+
+                        <a href="/photos/<%= photo.id %>" class="btn btn-primary">Show</a>
+
+                        <%end%>
+                      </div>
                     </div>
-                        <button class="btn btn-default" >
-                        <i class = "fa fa-commenting-o"></i>
-                        </button>
+                  </div>
 
-
-                  </form>
-                  </p>
-
-      </div>
-        <% if current_user.id == photo.user_id%>
-
-          <a href="/photos/<%= photo.id %>" class="btn btn-primary">Show</a>
-          <a href="/photos/<%= photo.id %>/edit" class="btn btn-warning">Edit</a>
-          <a href="/delete_photo/<%= photo.id %>" class="btn btn-danger" rel="nofollow">Delete</a>
-
-        <% else%>
-
-          <a href="/photos/<%= photo.id %>" class="btn btn-primary">Show</a>
-
-        <%end%>
-      </div>
-      </div>
-      </div>
-      </div>
-
-      <% end %>
-
-  </div>
-</div>
+              <% end %>
+            </div>
+          </div>
