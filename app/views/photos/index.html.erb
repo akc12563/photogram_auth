@@ -20,6 +20,7 @@
           <div class="panel-body">
         <img src="<%= photo.image %>" class="img-responsive">
         <p></p>
+
         <form action="/create_like" method="post">
           <!-- Hidden input for authenticity token to protect from forgery -->
             <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
@@ -35,6 +36,7 @@
               <i class="fa fa-heart-o"></i>
             </button>
           </form>
+
 
         <ul class="media-list">
           <li class="media">
@@ -54,7 +56,29 @@
                   <p>
                   <%= comment.body%></p>
                   <%end%></ul>
+                <p>
+                <!-- new form for creating a comment in line -->
+                  <form action="/quick_create" method="post">
+                    <!-- Hidden input for authenticity token to protect from forgery -->
+                    <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
 
+                    <!-- Label and input for photo_id -->
+                    <input type="hidden" id="photo_id" name="photo_id" value="<%= photo.id %>">
+                    <!-- Label and input for user_id -->
+                    <input type="hidden" id="user_id" name="user_id" value="<%= current_user.id %>">
+
+
+                    <!-- Label and input for body -->
+                    <div class="form-group">
+                      <input type="text" id="body" name="body" class="form-control" placeholder="Add a comment...">
+                    </div>
+                        <button class="btn btn-default" >
+                        <i class = "fa fa-commenting-o"></i>
+                        </button>
+
+
+                  </form>
+                  </p>
 
       </div>
         <% if current_user.id == photo.user_id%>

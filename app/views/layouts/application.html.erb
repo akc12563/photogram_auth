@@ -43,6 +43,7 @@
           <li><a href="/comments">Comments</a></li>
           <li><a href="/photos">Photos</a></li>
           <li><a href="/likes">Likes</a></li>
+
           <li><a href="/users">Users</a></li>
           <li><a href="/rails/info">Sitemap</a></li>
         </ul>
@@ -66,6 +67,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li><a href="/users/edit"><%=current_user.username%></a></li>
         <li><a href="/users/<%=current_user.id%>">My Photos</a></li>
+        <li><a href="/my_likes">My Likes</a></li>
 
         <li><a href="/users/sign_out" data-method="delete" rel="nofollow">
         <i class="fa fa-sign-out" aria-hidden="true"></i> Sign Out</a></li>

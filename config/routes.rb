@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   # CREATE
   get "/comments/new", :controller => "comments", :action => "new"
   post "/create_comment", :controller => "comments", :action => "create"
+  post "/quick_create", :controller=> "comments", :action=>"quick_create"
 
   # READ
   get "/comments", :controller => "comments", :action => "index"
@@ -43,6 +44,7 @@ Rails.application.routes.draw do
   # READ
   get "/likes", :controller => "likes", :action => "index"
   get "/likes/:id", :controller => "likes", :action => "show"
+  get "/my_likes", :controller => "likes", :action=> "show_mine"
 
   # UPDATE
   get "/likes/:id/edit", :controller => "likes", :action => "edit"

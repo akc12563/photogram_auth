@@ -64,4 +64,9 @@ class LikesController < ApplicationController
       redirect_to(:back, :notice => "Like deleted.")
     end
   end
+
+  def show_mine
+    @likes=Like.where({:user_id=>current_user.id})
+  render("likes/my_likes.html.erb")
+  end
 end
