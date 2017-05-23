@@ -20,18 +20,20 @@
           <div class="panel-body">
         <img src="<%= photo.image %>" class="img-responsive">
         <p></p>
-        <!-- check if there is a like for this user and photo already -->
-        <% if Like.where(:user_id=> current_user.id, :photo_id=> photo.id).exists?%>
-        <!-- if yes, display a closed heart and allow user to delete like -->
-        <form action = "/delete_like/<%=Like.where(:user_id=> current_user.id, :photo_id=> photo.id).ids%>">
 
-          <input type="text" id="user_id" name="user_id" value="<%=current_user.id%>">
-          <input type="text" id="photo_id" name="photo_id" value="<%=photo.id%>">
+        <!-- check if there is a like for this user and photo already -->
+
+        <% if Like.where(:user_id=> current_user.id, :photo_id=> photo.id).exists?%>
+
+        <!-- if yes, display a closed heart and allow user to delete like -->
+
+        <form action = "/delete_like/<%=(Like.where(:user_id=> current_user.id, :photo_id=> photo.id).ids).sample%>">
         <button class="btn btn-link">
           <i class="fa fa-heart"></i></button>
         </form>
 
           <!-- if not, display open heart and allow user to add like -->
+          
           <%else%>
         <form action="/create_like" method="post">
           <!-- Hidden input for authenticity token to protect from forgery -->

@@ -26,7 +26,7 @@ class LikesController < ApplicationController
     save_status = @like.save
 
     if save_status == true
-      redirect_to("/likes/#{@like.id}", :notice => "Like created successfully.")
+      redirect_to("/", :notice => "Like created successfully.")
     else
       render("likes/new.html.erb")
     end
@@ -71,8 +71,8 @@ class LikesController < ApplicationController
   end
 
   def quick_destroy
-    
-    @like = Like.where(:user_id=> current_user.id, :photo_id=> photo.id).ids
+
+    @like = Like.find(params[:ids])
 
     @like.destroy
 
