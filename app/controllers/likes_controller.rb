@@ -69,4 +69,17 @@ class LikesController < ApplicationController
     @likes=Like.where({:user_id=>current_user.id})
   render("likes/my_likes.html.erb")
   end
+
+  def quick_destroy
+    
+    @like = Like.where(:user_id=> current_user.id, :photo_id=> photo.id).ids
+
+    @like.destroy
+
+    if URI(request.referer).path == "/likes/#{@like.id}"
+      redirect_to("/", :notice => "Like deleted.")
+    else
+      redirect_to(:back, :notice => "Like deleted.")
+    end
+  end
 end

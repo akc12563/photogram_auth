@@ -52,6 +52,7 @@ Rails.application.routes.draw do
 
   # DELETE
   get "/delete_like/:id", :controller => "likes", :action => "destroy"
+  get "/delete_like", :controller=>"likes", :action=>"quick_destroy"
   #------------------------------
 
   devise_for :users
